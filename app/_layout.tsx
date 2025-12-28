@@ -2,6 +2,7 @@ import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
 import { Session } from "@supabase/supabase-js";
 import { supabase } from "@/supabase/supabase";
+import { ActivityIndicator, View } from "react-native";
 
 export default function RootLayout() {
   const [session, setSession] = useState<Session | null>(null);
@@ -24,6 +25,14 @@ export default function RootLayout() {
     }
   }, []);
 
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
   const isLoggedIn = !!session;
   return (
     <Stack screenOptions={{ headerShown: false }}>
@@ -31,7 +40,7 @@ export default function RootLayout() {
         <Stack.Screen name="(auth)" />
       </Stack.Protected>
       <Stack.Protected guard={isLoggedIn}>
-        <Stack.Screen name="index" />
+        <Stack.Screen name="(tab)" />
       </Stack.Protected>
     </Stack>
   )
