@@ -1,9 +1,9 @@
-import { View, Text, StyleSheet } from 'react-native';
-import React from 'react';
+import { deleteData, updateData } from '@/services/todo';
+import { useTodo } from '@/store/todoStore';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import { useTodo } from '@/store/store';
-import { deleteData, updateData } from '@/services/todo';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 interface TodoListProps {
     id: string

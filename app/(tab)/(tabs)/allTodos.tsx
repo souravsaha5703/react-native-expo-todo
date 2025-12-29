@@ -1,12 +1,12 @@
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import React, { useEffect } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
 import TodoList from '@/components/todolist';
+import { fetchData } from '@/services/todo';
+import { useTodo } from '@/store/todoStore';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useRouter } from 'expo-router';
-import { fetchData } from '@/services/todo';
-import { useTodo } from '@/store/store';
+import { StatusBar } from 'expo-status-bar';
+import React, { useEffect } from 'react';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const AllTodos = () => {
     const router = useRouter();

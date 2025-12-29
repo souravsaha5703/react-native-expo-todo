@@ -1,13 +1,12 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Platform } from 'react-native';
-import { useState } from 'react';
-import { Picker } from '@react-native-picker/picker';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import { Todo } from '@/utils/interfaces';
 import { insertData } from '@/services/todo';
-import { useTodo } from '@/store/store';
+import { useTodo } from '@/store/todoStore';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Picker } from '@react-native-picker/picker';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const AddTask = () => {
   const router = useRouter()
