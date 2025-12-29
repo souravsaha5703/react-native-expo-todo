@@ -8,7 +8,7 @@ import { useRouter } from 'expo-router';
 import { fetchData } from '@/services/todo';
 import { useTodo } from '@/store/store';
 
-const Home = () => {
+const AllTodos = () => {
     const router = useRouter();
     const todos = useTodo((state) => state.todos);
     const addAllTodo = useTodo((state) => state.addAllTodo);
@@ -24,28 +24,22 @@ const Home = () => {
         fetchTodos();
     }, []);
 
-    const today = new Date();
-    const todayFormatted: string = today.toISOString().split('T')[0];
-
-    const todaysTasks = todos.filter((todo) => String(todo.due_date) == todayFormatted);
-
     const handleAddTask = () => {
         router.push('/(tab)/(modals)/addTask');
     }
-
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar style='light' backgroundColor='#212529' />
             <View style={styles.header}>
                 <FontAwesome name='tasks' style={styles.headerIcon} />
-                <Text style={styles.headerText}>Today</Text>
+                <Text style={styles.headerText}>All Todos</Text>
                 <TouchableOpacity onPress={handleAddTask}>
                     <FontAwesome name='calendar-plus-o' style={styles.headerIcon} />
                 </TouchableOpacity>
             </View>
             <View style={styles.listContainer}>
                 <FlatList
-                    data={todaysTasks}
+                    data={todos}
                     renderItem={({ item }) => <TodoList id={item.id} task={item.task} priority={item.priority} completed={item.completed} />}
                 />
             </View>
@@ -87,4 +81,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Home
+export default AllTodos

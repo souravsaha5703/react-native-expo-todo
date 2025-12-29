@@ -1,6 +1,7 @@
-import React from 'react'
-import { Tabs } from 'expo-router'
-import FontAwesome from '@expo/vector-icons/FontAwesome'
+import React from 'react';
+import { Tabs } from 'expo-router';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 const TabLayout = () => {
     return (
@@ -11,6 +12,13 @@ const TabLayout = () => {
                     headerShown: false,
                     title: "Home",
                     tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />
+                }} />
+            <Tabs.Screen
+                name='allTodos'
+                options={{
+                    headerShown: false,
+                    title: "All Todos",
+                    tabBarIcon: ({ color }) => <FontAwesome6 size={28} name="clipboard-list" color={color} />
                 }} />
             <Tabs.Screen
                 name='profile'

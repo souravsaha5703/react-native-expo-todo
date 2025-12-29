@@ -4,38 +4,54 @@ import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import { Todo } from '@/utils/interfaces';
+import { insertData } from '@/services/todo';
+import { useTodo } from '@/store/store';
 
 const AddTask = () => {
   const router = useRouter()
 
-  const [task, setTask] = useState('')
-  const [priority, setPriority] = useState('none')
-  const [date, setDate] = useState(new Date())
-  const [showPicker, setShowPicker] = useState(false)
+  const [task, setTask] = useState<string>('');
+  const [priority, setPriority] = useState<number>(0);
+  const [date, setDate] = useState<Date>(new Date());
+  const [showPicker, setShowPicker] = useState<boolean>(false);
+  const addTodo = useTodo((state) => state.addTodo);
 
   const isDisabled = task.trim() === '';
 
-  const onSave = () => {
+  const onSave = async () => {
     if (isDisabled) return
 
     const newTask = {
-      task,
-      priority,
-      date,
+      task: task,
+      priority: priority,
+      due_date: date,
     }
 
-    console.log(newTask) // replace with DB insert
+    const newData = await insertData(newTask);
 
-    router.back()
+    if (newData.data) {
+      addTodo(newData.data[0]);
+    }
+
+    router.back();
+  }
+
+  const onCrossTap = () => {
+    router.back();
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <Text style={styles.title}>Add Task</Text>
 
-      {/* Task */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={onCrossTap}>
+          <FontAwesome6 name='xmark' style={styles.headerIcon} />
+        </TouchableOpacity>
+        <Text style={styles.title}>Add Task</Text>
+      </View>
+
       <View style={styles.card}>
         <Text style={styles.label}>Task</Text>
         <TextInput
@@ -47,19 +63,17 @@ const AddTask = () => {
         />
       </View>
 
-      {/* Priority */}
       <View style={styles.card}>
         <Text style={styles.label}>Priority</Text>
         <View style={styles.pickerWrapper}>
           <Picker selectedValue={priority} onValueChange={setPriority}>
-            <Picker.Item label="No priority" value="none" />
-            <Picker.Item label="1st" value="1st" />
-            <Picker.Item label="2nd" value="2nd" />
+            <Picker.Item label="No priority" value={0} />
+            <Picker.Item label="1st priority" value={1} />
+            <Picker.Item label="2nd priority" value={2} />
           </Picker>
         </View>
       </View>
 
-      {/* Date */}
       <View style={styles.card}>
         <Text style={styles.label}>Date</Text>
         <TouchableOpacity
@@ -84,11 +98,10 @@ const AddTask = () => {
         />
       )}
 
-      {/* Save Button */}
       <TouchableOpacity
         style={[styles.saveBtn, isDisabled && styles.disabledBtn]}
         disabled={isDisabled}
-        onPress={() => router.back()}
+        onPress={onSave}
       >
         <Text style={styles.saveText}>Save Task</Text>
       </TouchableOpacity>
@@ -102,6 +115,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#f8f9fa',
     paddingHorizontal: 20,
     paddingTop: 10,
+  },
+
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 15
+  },
+
+  headerIcon: {
+    fontSize: 24,
+    color: "black",
+    marginBottom: 20,
   },
 
   title: {
